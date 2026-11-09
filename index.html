@@ -1,0 +1,691 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Il silenzio della piazza</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sonetto fisso a sinistra (tablet in orizzontale), stanza a destra; su schermi stretti il testo è un pannello a scomparsa */
+:root{
+  --bg:#edeff5; --surface:#ffffff; --ink:#14182b; --muted:#585e7e; --line:#d3d8e6;
+  --accent:#2a3d9e; --accent-ink:#ffffff; --seal:#c23f29; --ok:#2b7a58; --gold:#a97c1c; --tint:#e4e8f6;
+  --display:"EB Garamond",Georgia,"Times New Roman",serif;
+  --ui:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1226; --surface:#181c38; --ink:#eceef7; --muted:#a2a8c8; --line:#2b3158;
+  --accent:#93a3ff; --accent-ink:#0f1226; --seal:#ff7d62; --ok:#5cc59a; --gold:#e0b955; --tint:#222750; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1226; --surface:#181c38; --ink:#eceef7; --muted:#a2a8c8; --line:#2b3158;
+  --accent:#93a3ff; --accent-ink:#0f1226; --seal:#ff7d62; --ok:#5cc59a; --gold:#e0b955; --tint:#222750; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:16px;line-height:1.5;
+  padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:2rem}h3{font-size:1.3rem}
+p{margin:0 0 .8em}
+.wrap{max-width:1280px;margin:0 auto}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding-block:12px;border-bottom:1px solid var(--line)}
+.bar .brand{font-family:var(--display);font-size:1.25rem;font-style:italic;margin-right:auto}
+.seals{display:flex;gap:8px;align-items:center}
+.seal{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:1.15rem;font-weight:600;
+  border:1.5px dashed var(--line);color:var(--muted);background:transparent}
+.seal.on{border:1.5px solid var(--seal);background:var(--seal);color:#fff;animation:stamp .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes stamp{from{transform:scale(1.8) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 14px;cursor:pointer;min-height:44px}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.btn.sm{min-height:36px;padding:5px 10px;font-size:.9rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.grid{display:grid;grid-template-columns:1fr;gap:24px;padding-block:20px 48px}
+@media (min-width:1000px){.grid{grid-template-columns:minmax(300px,380px) minmax(0,1fr)}
+  #textbtn{display:none}}
+aside#text{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;height:fit-content;min-width:0}
+@media (min-width:1000px){aside#text{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}}
+@media (max-width:999px){aside#text{display:none;position:fixed;inset:0;z-index:20;border-radius:0;overflow:auto;
+  padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+  aside#text.open{display:block}}
+.verse{display:grid;grid-template-columns:2.2em 1fr;font-family:var(--display);font-size:1.2rem;line-height:1.45}
+.verse i{font-family:var(--mono);font-style:normal;font-size:.72rem;color:var(--muted);padding-top:.5em}
+.verse.gap{margin-top:.7em}
+sup{font-family:var(--ui);font-size:.62em;color:var(--seal);font-weight:600;margin-left:1px}
+.notes{font-size:.86rem;color:var(--muted);margin:14px 0 0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;gap:3px}
+.notes b{color:var(--seal);font-weight:600}
+.stage{min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:0 0 18px}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.prova h3{margin:2px 0 10px}
+.done-tag{display:inline-block;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ok);border:1px solid var(--ok);border-radius:99px;padding:1px 9px;margin-left:8px;vertical-align:middle}
+.fb{margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--tint);font-size:.95rem}
+.fb.bad{border-left:4px solid var(--seal)}.fb.good{border-left:4px solid var(--ok)}
+.muted{color:var(--muted)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+textarea,input[type=text],select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:44px}
+textarea{min-height:110px;resize:vertical;line-height:1.5}
+.count{font-family:var(--mono);font-size:.76rem;color:var(--muted);text-align:right;margin-top:2px}
+.count.over{color:var(--seal)}
+.para{font-family:var(--display);font-size:1.25rem;line-height:2.1;margin:0 0 .6em}
+.para .lbl{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-right:8px}
+.tok{background:none;border:0;border-bottom:1.5px dotted transparent;padding:2px 1px;cursor:pointer;font:inherit;color:inherit;border-radius:3px}
+.tok:hover{background:var(--tint)}
+.tok.sel{background:var(--seal);color:#fff;border-radius:4px}
+.tok.found{background:var(--ok);color:#fff;border-radius:4px}
+.fix{display:grid;grid-template-columns:minmax(120px,.7fr) 1fr 1.6fr;gap:8px;align-items:center;margin-top:8px}
+.fix2{display:grid;grid-template-columns:minmax(120px,.6fr) 1fr;gap:8px;align-items:center;margin-top:8px}
+.fix .w,.fix2 .w{font-family:var(--display);font-size:1.15rem}
+@media (max-width:700px){.fix,.fix2{grid-template-columns:1fr}}
+.pool,.bucket .in{display:flex;flex-wrap:wrap;gap:6px;min-height:46px}
+.pool{padding:10px;border:1.5px dashed var(--line);border-radius:10px;margin:8px 0 14px}
+.buckets{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.bucket{border:1.5px solid var(--line);border-radius:10px;padding:10px;cursor:pointer;background:var(--bg)}
+.bucket.target{border-color:var(--accent);background:var(--tint)}
+.bucket h4{margin:0 0 6px;font-size:.82rem;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.cd{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px;cursor:pointer;font-family:var(--display);font-size:1.1rem;min-height:40px}
+.cd small{font-family:var(--mono);font-size:.62rem;color:var(--muted);margin-left:5px}
+.cd.sel{outline:3px solid var(--accent)}
+.cd.bad{border-color:var(--seal);background:color-mix(in srgb,var(--seal) 14%,var(--surface))}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:7px 14px;cursor:pointer;min-height:40px}
+.chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.order{display:grid;gap:6px;margin:8px 0}
+.order .it{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--bg)}
+.order .it span{flex:1}
+.rm{display:grid;grid-template-columns:2.2em 1fr 4.5em;gap:8px;align-items:center;margin:4px 0}
+.rm.bad{background:color-mix(in srgb,var(--seal) 12%,transparent);border-radius:6px}
+.rm .no{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.syl{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.syl button{min-width:48px;min-height:52px;border:1px solid var(--line);background:var(--surface);border-radius:8px;cursor:pointer;
+  font-family:var(--display);font-size:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px 8px}
+.syl button small{font-family:var(--mono);font-size:.62rem;color:var(--muted)}
+.syl button.on{background:var(--seal);color:#fff;border-color:var(--seal)}
+.syl button.on small{color:#fff}
+.sigillo{border:1.5px solid var(--gold);border-radius:12px;padding:18px 20px;background:color-mix(in srgb,var(--gold) 8%,var(--surface))}
+.letters{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+.letters .seal{width:56px;height:56px;font-size:1.7rem}
+.hero{padding-block:36px 8px}
+.hero h1{font-size:clamp(2.6rem,7vw,5rem);font-style:italic;font-weight:400;letter-spacing:-.01em}
+.hero p.lead{font-family:var(--display);font-size:1.35rem;max-width:34em;color:var(--muted)}
+.rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.room{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:16px;cursor:pointer;display:grid;gap:4px;min-height:120px}
+.room:hover{border-color:var(--accent)}
+.room[disabled]{opacity:.5;cursor:not-allowed}
+.room .n{font-family:var(--display);font-size:1.25rem}
+.room .st{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.room.ok .st{color:var(--ok)}
+.canvases{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.canvases canvas{width:100%;height:auto;aspect-ratio:8/5;background:#fff;border:1px solid var(--line);border-radius:8px;touch-action:none;display:block}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.dot{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}
+.dot.on{outline:3px solid var(--accent)}
+.method{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.method div{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--bg)}
+.method b{font-family:var(--display);font-size:1.15rem;display:block}
+details{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+@media (prefers-reduced-motion:reduce){.seal.on{animation:none}}
+@media (min-width:1000px){.closeText{display:none}}
+</style>
+<div class="wrap" id="app">
+  <header class="bar">
+    <span class="brand">Il silenzio della piazza</span>
+    <div class="seals" id="seals" aria-label="Sigilli raccolti"></div>
+    <button class="btn sm" id="helpbtn" type="button">Carte aiuto</button>
+    <button class="btn sm" id="textbtn" type="button">Il sonetto</button>
+    <button class="btn sm" id="homebtn" type="button">Mappa</button>
+  </header>
+  <div class="grid">
+    <aside id="text" aria-label="Il sonetto"></aside>
+    <main class="stage" id="stage"></main>
+  </div>
+</div>
+<script>
+"use strict";
+/* ---------- dati ---------- */
+var POEM=[
+["Chi è questa che vén, ch’ogn’om la mira,<sup>1</sup>",""],
+["che fa tremar di chiaritate l’âre<sup>2</sup>",""],
+["e mena seco Amor,<sup>3</sup> sì che parlare",""],
+["null’omo pote, ma ciascun sospira?<sup>4</sup>",""],
+["O Deo, che sembra quando li occhi gira!","gap"],
+["dical’ Amor,<sup>5</sup> ch’i’ nol savria contare:<sup>6</sup>",""],
+["cotanto d’umiltà donna<sup>7</sup> mi pare,",""],
+["ch’ogn’altra ver’ di lei i’ la chiam’ ira.<sup>8</sup>",""],
+["Non si poria contar la sua piagenza,<sup>9</sup>","gap"],
+["ch’a le’ s’inchin’ ogni gentil vertute,<sup>10</sup>",""],
+["e la beltate per sua dea la mostra.",""],
+["Non fu sì alta<sup>11</sup> già la mente nostra","gap"],
+["e non si pose ’n noi tanta salute,<sup>12</sup>",""],
+["che propiamente n’aviàn canoscenza.<sup>13</sup>",""]];
+var NOTES=[
+"mira: ammira, guarda con ammirazione. Tutti si fermano a contemplarla.",
+"tremar di chiaritate: far risplendere l’aria con la luce. «Tremar» suggerisce una luce viva, che vibra.",
+"mena seco Amor: conduce con sé Amore, personificato.",
+"sì che parlare… sospira: tanto che nessuno può parlare e tutti restano a sospirare.",
+"dical’ Amor: lo dica Amore stesso.",
+"ch’i’ nol savria contare: perché io non sarei capace di dirlo.",
+"d’umiltà donna: signora (dal latino «domina») dell’umiltà, cioè colei che la possiede al massimo grado. Nel linguaggio cortese «umiltà» vale anche benevolenza.",
+"ch’ogn’altra… ira: che ogni altra donna, a confronto con lei, la chiamerei ira (malvagità). Ira è il contrario di umiltà.",
+"Non si poria… piagenza: non si potrebbe raccontare la sua bellezza (piagenza = grazia, piacevolezza).",
+"ogni gentil vertute: ogni virtù nobile, ogni gentilezza.",
+"Non fu sì alta: non è tanto elevata (profonda).",
+"non si pose ’n noi tanta salute: non è stata data a noi tanta virtù (salute = perfezione).",
+"che… canoscenza: che ne possiamo avere una conoscenza adeguata."];
+var AUTORE="Guido Cavalcanti (Firenze, 1250 ca. – 1300) apparteneva a una famiglia guelfa di parte bianca ed era nemico dei Donati, di parte nera. Amico di Dante, fu esiliato e poté rientrare a Firenze grazie a un’amnistia, ma vi morì dopo soli due mesi. Il suo Canzoniere conta cinquantadue liriche. A differenza di Guinizelli, sente l’amore come un dramma, spesso tragico e crudele: al posto del leggiadro Cupido compare talvolta un arciere feroce. In questo sonetto, però, l’atteggiamento è più contemplativo. Testo secondo l’edizione di D. De Robertis (Einaudi, 1986).";
+var HELP={
+ r1:{nota:"Guarda le note 1, 2 e 6 nel pannello del sonetto: spiegano «mira», «tremar di chiaritate» e «nol savria contare».",ril:"Rileggi i vv. 4, 6 e 8: le parole in rima «sospira», «contare» e «ira» contengono tre risposte.",conf:"Confrontatevi per 2 minuti con un’altra squadra: avete trovato gli stessi errori? Scambiate idee, senza copiare."},
+ r2:{nota:"Le note 2 e 6 aiutano: «tremar di chiaritate» e «savria contare» sono le due espressioni che stanno bene in due campi.",ril:"Rileggi i vv. 3-4: l’effetto della donna sulla folla coinvolge più campi insieme.",conf:"Confrontatevi per 2 minuti con un’altra squadra sulle due carte doppie."},
+ r3:{nota:"Note 3, 6 e 8: Amore compare come personaggio e «ira» è il contrario di «umiltà».",ril:"Rileggi i vv. 1-4 e 9-14: quante sono le domande e quante le negazioni? Che cosa non riesce a fare il poeta?",conf:"Confrontatevi per 2 minuti con un’altra squadra sul «perché» di una figura su cui avete dubbi."},
+ r4:{nota:"Cerca in «Voi che» la parola che al v. 5 sta accanto a «tagliando» e che in «Chi è questa» compare al v. 1.",ril:"Rileggi il v. 4 di «Voi che»: che cosa fa Amore alla vita del poeta?",conf:"Confrontatevi per 2 minuti con un’altra squadra su che cosa cambia tra i due sonetti e Rustico."}};
+var ROOMS=[
+ {id:"r1",n:"La soglia della piazza",sk:"Parafrasi e comprensione",L:"M"},
+ {id:"r2",n:"La stanza dei sospiri",sk:"Parole-chiave e campi semantici",L:"I"},
+ {id:"r3",n:"La sala degli echi",sk:"Rime e figure retoriche",L:"A"},
+ {id:"r4",n:"Il corridoio delle voci",sk:"Collegamenti con altri testi",L:"R"}];
+/* stanza 1 */
+var PARA=[["vv. 1-4","Chi è costei che avanza e che tutti ignorano, che fa tremare di buio l’aria e porta con sé Amore, cosicché nessuno riesce a parlare e tutti ridono?"],
+["vv. 5-8","Oh Dio, come appare quando volge lo sguardo! Lo dica Amore stesso, perché io lo so dire benissimo: mi sembra così piena di umiltà che, in confronto a lei, ogni altra donna io la chiamerei bontà."],
+["vv. 12-14","La nostra mente non è mai stata così bassa, né in noi è stata infusa tanta virtù, da averne una conoscenza adeguata."]];
+var ERR=[
+ {w:["ignorano"],re:/(guard|ammir|osserv|fissa|contempl|miran|mira)/,h:"Rileggi il v. 1 e la nota 1: che cosa fa «ogn’om» quando lei passa?"},
+ {w:["buio"],re:/(luc|luminos|chiar|splend|brill|rispl|bagliore|illumin)/,h:"Nota 2: di che cosa trema l’aria? Il v. 2 dice «di chiaritate»."},
+ {w:["ridono"],re:/(sospir)/,h:"Rileggi il v. 4: che cosa fa «ciascun»?"},
+ {w:["benissimo"],re:/(non.*(sap|sar|riesc|rius|poss|capac|so\b)|incapac|impossibil)/,h:"Rileggi i vv. 5-6 e la nota 6: «ch’i’ nol savria contare». Il poeta sa dirlo?"},
+ {w:["bontà"],re:/(\bira\b|malvag|cattiv|superb|crudel|rabbia|furi|malign)/,h:"Rileggi il v. 8 e la nota 8: come viene chiamata ogni altra donna? È il contrario di umiltà."},
+ {w:["bassa"],re:/(alt|profond|elevat|acut|sublim|nobil|grand|vast)/,h:"Nota 11: «Non fu sì alta» significa «non è tanto…»?"}];
+var CHK1=["Ho reso «Non si poria contar la sua piagenza» con parole mie (nota 9).","Ho spiegato chi si inchina e davanti a chi nel v. 10 (nota 10).","Ho individuato chi è il soggetto di «mostra» e chi viene mostrata come «dea».","Ho capito che «ch’a le’» sta per «perché davanti a lei».","La mia frase fila da sola, come se il sonetto non esistesse."];
+/* stanza 1 (domande di comprensione) */
+var COMP=[["q1","L’effetto della donna","Che effetto ha la donna su chi la guarda? Citate almeno due espressioni dei vv. 1-4.",8],
+["q2","Chi può dirlo","Al v. 6 il poeta invita Amore a parlare al suo posto. Perché dice di non saper raccontare che cosa succede quando la donna volge gli occhi?",8],
+["q3","Il limite della mente","Nell’ultima terzina il poeta dice che la mente umana non può avere «propiamente canoscenza» della donna. Spiegate con parole vostre che cosa significa.",8]];
+/* stanza 2 */
+var BK=[["vista","Vista e luce"],["parola","Parola e silenzio"],["amore","Amore e turbamento"],["virtu","Virtù e bellezza (e il loro contrario)"],["mente","Mente e conoscenza"]];
+var CARDS=[["mira","1",["vista"]],["chiaritate","2",["vista"]],["occhi","5",["vista"]],["tremar","2",["vista","amore"]],
+["parlare","3",["parola"]],["contare","6",["parola"]],["savria","6",["parola","mente"]],
+["Amor","3",["amore"]],["sospira","4",["amore"]],
+["umiltà","7",["virtu"]],["ira","8",["virtu"]],["gentil vertute","10",["virtu"]],["dea","11",["virtu"]],
+["mente","12",["mente"]],["alta","12",["mente"]],["canoscenza","14",["mente"]]];
+var KW=["Amor","mira","sospira","parlare","umiltà","ira","dea","mente","canoscenza"];
+/* stanza 3 */
+var RIMA=["mira","l’âre","parlare","sospira","gira","contare","pare","ira","piagenza","vertute","mostra","nostra","salute","canoscenza"];
+var RIMA_OK="ABBAABBACDEEDC";
+var FIG=[["«e mena seco Amor» (v. 3)","personificazione"],["«umiltà» (v. 7) e «ira» (v. 8)","antitesi"],["«Non si poria contar…» (v. 9) e «Non fu sì alta…» (v. 12)","anafora"],["«sì che parlare / null’omo pote» (vv. 3-4)","enjambement"],["«Amor» (v. 3), ripreso al v. 6","ripresa"],["«Chi è questa che vén…?» (vv. 1-4)","interrogativa"],["«O Deo, che sembra quando li occhi gira!» (v. 5)","esclamazione"]];
+var FIGOPT=["personificazione","antitesi","anafora","enjambement","ripresa","interrogativa","esclamazione","metafora","iperbole"];
+var WHY=[["w1","Domande e negazioni","Perché Cavalcanti apre con una domanda e costruisce le terzine su negazioni («Non si poria contar…», «Non fu sì alta…») invece di descrivere la donna?",10],
+["w2","Amore personaggio","Perché Amore è personificato e invitato a parlare al posto del poeta (vv. 3 e 6)? Che cosa dice questa scelta sulla donna?",10],
+["w3","Umiltà contro ira","Che effetto ottiene l’antitesi tra «umiltà» (v. 7) e «ira» (v. 8)? Che cosa fa capire delle altre donne?",10],
+["w4","Ripetizioni e silenzio","Perché l’enjambement «parlare / null’omo pote» (vv. 3-4) e le riprese «nol savria contare» (v. 6) e «Non si poria contar» (v. 9) rafforzano l’idea che la donna non si possa dire?",10]];
+/* stanza 4 */
+var VOI=["Voi che per li occhi mi passaste ’l core","e destaste la mente che dormia,","guardate a l’angosciosa vita mia","che sospirando la distrugge Amore.","E’ vèn tagliando di sì gran valore","che’ deboletti spiriti van via:","riman figura sol en segnoria","e voce alquanta, che parla dolore.","Questa vertù d’amor che m’ha disfatto","da’ vostr’occhi gentil’ presta si mosse:","un dardo mi gittò dentro dal fianco.","Sì giunse ritto ’l colpo al primo tratto,","che l’anima tremando si riscosse","veggendo morto ’l cor nel lato manco."];
+var TWG=[["vèn"],["tremando"],["amor","amore"],["parla"],["sospirando"],["occhi"],["mente"]];
+var TWINS=[].concat.apply([],TWG);
+var NEUTRAL=["li","gentil","vertù"];
+var TW=[["tremar / tremando","In «Chi è questa» (v. 2) che cosa trema?",["l’anima, per la paura","l’aria, resa viva dalla luce della donna","il poeta, per la rabbia"],1,"In «Voi che» (v. 13) che cosa trema?",["l’aria, illuminata dalla donna","l’anima, sconvolta dal colpo","la donna, per la gioia"],1],
+["vén / vèn","In «Chi è questa» (v. 1) chi viene?",["Amore","la donna che passa","il poeta"],1,"In «Voi che» (v. 5) chi viene («E’ vèn tagliando»)?",["la donna","Amore","l’anima"],1],
+["sospira / sospirando","In «Chi è questa» (v. 4) perché si sospira?",["tutti sospirano ammutoliti, per ammirazione","il poeta è stato ferito","Amore sospira"],0,"In «Voi che» (v. 4) perché si sospira?",["tutti ammirano la donna","la donna sospira per lui","Amore distrugge la vita del poeta facendola sospirare"],2],
+["parlare / parla","In «Chi è questa» (v. 4) chi riesce a parlare?",["tutti parlano della donna","nessuno riesce a parlare","Amore parla al poeta"],1,"In «Voi che» (v. 8) che cosa resta della parola?",["una voce forte e sicura","il poeta parla con la donna","un filo di voce, che esprime dolore"],2]];
+var RUST=["Dovunque vai, con teco porti il cesso,","oi buggeressa vecchia puzzolente,","ché qualunque persona ti sta presso,","si tura il naso e fugge inmantenente.","Li denti e le gengie tue ménar gresso,","ché li taseva l’alito putente;","le selle paion legna d’alcipresso","inver’lo tuo fragor, tant’è repente.","Ch’e’par che s’apran mille monimenta","quand’apri il ceffo; perché non ti spolpe,","o ti rinchiude si, ch’om non ti senta?","Però che tutto ’l mondo ti paventa;","in corpo credo figlimi le volpe,","tal lezzo n’esce fuor, sozza giumenta!"];
+</script>
+<script>
+/* ---------- nucleo ---------- */
+var K="silenzio-della-piazza-v1";
+var S={team:"",mem:"",a:{},d:{},fb:{},help:{},tries:{},skipped:{},unlocked:false,draw:{},screen:"start"};
+try{var raw=localStorage.getItem(K);if(raw){var o=JSON.parse(raw);for(var k0 in o)S[k0]=o[k0];}}catch(e){}
+var saveT=null;
+function save(){clearTimeout(saveT);saveT=setTimeout(function(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}},250)}
+function $(s,r){return (r||document).querySelector(s)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function wc(s){var m=String(s||"").trim().match(/\S+/g);return m?m.length:0}
+function norm(s){return String(s||"").toLowerCase().replace(/[’']/g,"'").replace(/[.,;:!?«»"()]/g,"").trim()}
+function D(k){return !!S.d[k]}
+function A(k){return S.a[k]==null?"":S.a[k]}
+function setFb(k,kind,msg){S.fb[k]={kind:kind,msg:msg};if(!S.tries)S.tries={};if(kind==="bad")S.tries[k]=(S.tries[k]||0)+1;else S.tries[k]=0;save()}
+function FB(k){var f=S.fb[k];if(!f||!f.msg)return "";var sk=f.kind==="bad"&&(S.tries&&S.tries[k]>=2)&&k!=="cons";
+  return '<div class="fb '+f.kind+'" role="status">'+f.msg+(sk?'<div style="margin-top:8px">Siete bloccati? Potete andare avanti: contano soprattutto le risposte scritte. <button class="btn sm" type="button" data-act="skipP" data-v="'+k+'" style="margin-left:6px">Vai avanti comunque</button></div>':'')+'</div>'}
+function tag(k){return D(k)?'<span class="done-tag">'+(S.skipped&&S.skipped[k]?'saltata':'fatto')+'</span>':""}
+function ta(k,ph,min,max,rows){
+  var v=A(k);
+  return '<textarea id="f-'+k+'" data-k="'+k+'" placeholder="'+esc(ph||"")+'" rows="'+(rows||4)+'">'+esc(v)+'</textarea>'+
+  '<div class="count'+(max&&wc(v)>max?' over':'')+'" data-cnt="'+k+'" data-min="'+(min||0)+'" data-max="'+(max||0)+'">'+cntTxt(v,min,max)+'</div>';
+}
+function cntTxt(v,min,max){var n=wc(v);return n+" parole"+(min?" · almeno "+min:"")+(max?" · al massimo circa "+max:"")}
+function roomDone(i){return D(ROOMS[i].id+".S")}
+function lettersDone(){return ROOMS.filter(function(r){return D(r.id+".S")}).length}
+/* ---------- barra, testo, aiuti ---------- */
+function renderSeals(){
+  $("#seals").innerHTML=ROOMS.map(function(r,i){var on=roomDone(i);return '<span class="seal'+(on?' on':'')+'" title="Stanza '+(i+1)+'">'+(on?r.L:(i+1))+'</span>'}).join("")+
+  '<span class="seal'+(S.unlocked?' on':'')+'" title="Finale" style="margin-left:6px">'+(S.unlocked?'★':'·')+'</span>';
+}
+function renderText(){
+  var h='<div class="row" style="justify-content:space-between;margin-bottom:10px"><div class="eyebrow">Guido Cavalcanti · sonetto</div><button class="btn sm closeText" type="button" data-act="closeText">Chiudi</button></div>';
+  h+='<h3 style="margin-bottom:10px">Chi è questa che vén, ch’ogn’om la mira</h3>';
+  POEM.forEach(function(v,i){h+='<div class="verse'+(v[1]?' gap':'')+'"><i>'+(i+1)+'</i><span>'+v[0]+'</span></div>'});
+  h+='<div class="notes">'+NOTES.map(function(n,i){return '<span><b>'+(i+1)+'.</b> '+esc(n)+'</span>'}).join("")+'</div>';
+  h+='<details><summary>Il poeta</summary><p class="muted" style="margin:8px 0 0;font-size:.9rem">'+esc(AUTORE)+'</p></details>';
+  $("#text").innerHTML=h;
+}
+function openOv(html){
+  var o=$("#ov");if(!o){o=document.createElement("div");o.id="ov";o.style.cssText="position:fixed;inset:0;z-index:40;background:rgba(10,12,28,.6);display:grid;place-items:center;padding:16px";document.body.appendChild(o);}
+  o.innerHTML='<div class="card" style="max-width:640px;width:100%;max-height:90vh;overflow:auto;margin:0">'+html+'<div class="row" style="justify-content:flex-end"><button class="btn pri" type="button" data-act="closeOv">Chiudi</button></div></div>';
+  o.hidden=false;
+}
+function closeOv(){var o=$("#ov");if(o)o.hidden=true}
+function helpHtml(){
+  var inRoom=/^r\d$/.test(S.screen);
+  var names={nota:"Nota",ril:"Rilettura",conf:"Confronto"};
+  var h='<h3>Carte aiuto</h3><p class="muted">Ogni carta si usa una sola volta in tutto il gioco. Tocca una carta per spenderla nella stanza in cui ti trovi.</p>';
+  ["nota","ril","conf"].forEach(function(c){
+    var used=S.help[c];
+    h+='<div class="card" style="margin:0 0 10px;padding:14px 16px"><b>'+names[c]+'</b> ';
+    if(used){h+='<span class="muted">· usata nella stanza '+used.slice(1)+'</span><p style="margin:8px 0 0">'+esc(HELP[used][c])+'</p>'}
+    else if(inRoom){h+='<div style="margin-top:8px"><button class="btn sm" type="button" data-act="useHelp" data-v="'+c+'">Usa questa carta</button></div>'}
+    else{h+='<span class="muted">· disponibile</span>'}
+    h+='</div>';
+  });
+  return h;
+}
+/* ---------- navigazione ---------- */
+function go(sc){S.screen=sc;save();render();window.scrollTo(0,0);$("#text").classList.remove("open")}
+function render(){
+  var y=window.scrollY;
+  renderSeals();
+  var st=$("#stage"),sc=S.screen;
+  if(sc==="start")st.innerHTML=viewStart();
+  else if(sc==="hub")st.innerHTML=viewHub();
+  else if(sc==="finale")st.innerHTML=viewFinale();
+  else if(sc==="consegna")st.innerHTML=viewConsegna();
+  else if(ROOMV[sc])st.innerHTML=ROOMV[sc]();
+  if(sc==="finale"||sc==="consegna")setTimeout(initCanvases,0);
+  window.scrollTo(0,y);
+}
+/* ---------- schermate iniziali ---------- */
+function viewStart(){
+  return '<section class="hero"><div class="eyebrow">Escape room · Dolce stil novo</div>'+
+  '<h1>Il silenzio della piazza</h1>'+
+  '<p class="lead">Firenze, fine Duecento. Una donna attraversa la piazza. L’aria trema di luce, Amore cammina accanto a lei e tutti si fermano a guardarla. Nessuno riesce a parlare: restano solo i sospiri.</p>'+
+  '<p style="max-width:40em">Voi siete tra la folla ammutolita. Per ritrovare le parole attraversate quattro stanze della mente di Guido Cavalcanti, il poeta che ha visto la scena e non sa come raccontarla. Ogni sigillo vi restituisce una lettera. Con le quattro lettere ricomporrete una parola sola, e allora scriverete ciò che nessuno in piazza riesce a dire.</p></section>'+
+  '<div class="card" style="max-width:640px"><h3>La squadra</h3><p class="muted">Un dispositivo per squadra. Le risposte restano salvate su questo dispositivo.</p>'+
+  '<label for="f-team" class="eyebrow">Nome della squadra</label><input type="text" id="f-team" data-k="S.team" value="'+esc(S.team)+'" style="margin:4px 0 12px">'+
+  '<label for="f-mem" class="eyebrow">Componenti</label><input type="text" id="f-mem" data-k="S.mem" value="'+esc(S.mem)+'" placeholder="Nomi separati da virgola" style="margin:4px 0 14px">'+
+  '<p class="muted">Ruoli a rotazione a ogni stanza: chi legge ad alta voce, chi scrive, chi cerca le note, chi tiene il tempo.</p><p class="muted">Le prove a scelta sono un gioco, e se vi bloccate potete andare avanti. Le risposte scritte sono quelle che la docente leggerà: curatele.</p>'+
+  '<button class="btn pri" type="button" data-act="begin">Entra nella prima stanza</button></div>';
+}
+function viewHub(){
+  var h='<h2>Mappa della mente</h2><p class="muted" style="margin:6px 0 16px">Le stanze si aprono una dopo l’altra. Se un sigillo non si apre ricevete un indizio. Dopo due tentativi si può andare avanti: nessuno resta bloccato.</p><div class="rooms">';
+  ROOMS.forEach(function(r,i){
+    var ok=roomDone(i),lock=i>0&&!roomDone(i-1);
+    h+='<button class="room'+(ok?' ok':'')+'" type="button" '+(lock?'disabled ':'')+'data-act="goRoom" data-v="'+r.id+'"><span class="eyebrow">Stanza '+(i+1)+'</span><span class="n">'+r.n+'</span><span class="muted">'+r.sk+'</span><span class="st">'+(ok?"sigillo "+r.L+" raccolto":lock?"chiusa":"aperta")+'</span></button>';
+  });
+  h+='<button class="room'+(D("fin")?' ok':'')+'" type="button" '+(S.unlocked?'':'disabled ')+'data-act="go" data-v="finale"><span class="eyebrow">Finale</span><span class="n">La parola</span><span class="muted">Analisi e interpretazione scritte</span><span class="st">'+(S.unlocked?"aperta":"chiusa")+'</span></button></div>';
+  if(lettersDone()===4&&!S.unlocked){
+    h+='<div class="sigillo" style="margin-top:20px"><h3>Le quattro lettere</h3><p>Sono arrivate in ordine sparso. Riordinatele: l’indizio è nel v. 1, dove si dice che cosa fa «ogn’om» quando la donna passa.</p><div class="letters">'+
+    ROOMS.map(function(r){return '<span class="seal on">'+r.L+'</span>'}).join("")+'</div>'+
+    '<div class="row"><input type="text" id="f-ana" data-k="ana" value="'+esc(A("ana"))+'" style="max-width:240px" placeholder="La parola" aria-label="La parola formata dalle lettere"><button class="btn pri" type="button" data-act="ana">Pronuncia la parola</button></div>'+FB("ana")+'</div>';
+  }
+  return h;
+}
+/* ---------- azioni ---------- */
+var ACT={
+ begin:function(){go("hub")},
+ go:function(el){go(el.dataset.v)},
+ goRoom:function(el){go(el.dataset.v)},
+ closeText:function(){$("#text").classList.remove("open")},
+ closeOv:closeOv,
+ useHelp:function(el){var c=el.dataset.v;if(!S.help[c]&&/^r\d$/.test(S.screen)){S.help[c]=S.screen;save();openOv(helpHtml())}},
+ ana:function(){
+   if(norm(A("ana"))==="mira"){S.unlocked=true;setFb("ana","good","Tutti la mirano, e le parole tornano.");save();go("finale")}
+   else setFb("ana","bad","Le lettere sono giuste, l’ordine no. Rileggi il v. 1: che cosa fa ognuno quando lei passa?");render()
+ }
+};
+ACT.skipP=function(el){var k=el.dataset.v;if(!S.skipped)S.skipped={};
+  if(k==="ana"){S.unlocked=true;S.skipped.ana=true;save();return go("finale")}
+  if(k==="fin"){S.d.fin=true;S.skipped.fin=true;save();return go("consegna")}
+  S.d[k]=true;S.skipped[k]=true;S.fb[k]=null;save()};
+document.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]");if(!el||el.disabled)return;
+  var f=ACT[el.dataset.act];if(f){f(el);if(["closeOv","closeText","useHelp","go","goRoom","begin"].indexOf(el.dataset.act)<0&&el.dataset.act!=="ana")render();}
+});
+function onField(t){
+  var k=t.dataset.k;if(!k)return;
+  var v=t.type==="checkbox"?t.checked:t.value;
+  if(k.indexOf("S.")===0)S[k.slice(2)]=v;else S.a[k]=v;
+  save();
+  var c=document.querySelector('[data-cnt="'+k+'"]');
+  if(c){var mn=+c.dataset.min,mx=+c.dataset.max;c.textContent=cntTxt(String(v),mn,mx);c.classList.toggle("over",!!mx&&wc(v)>mx)}
+}
+document.addEventListener("input",function(e){onField(e.target)});
+document.addEventListener("change",function(e){onField(e.target)});
+$("#helpbtn").addEventListener("click",function(){openOv(helpHtml())});
+$("#textbtn").addEventListener("click",function(){$("#text").classList.add("open")});
+$("#homebtn").addEventListener("click",function(){go(S.screen==="start"?"start":"hub")});
+</script>
+<script>
+/* ---------- stanze 1 e 2 ---------- */
+var ROOMV={};
+var SIG={r1:/(mena|menar)/,r2:/\bira\b/,r3:/amor/,r4:/rim/};
+var SIGH={r1:"Non è questa. Guarda la nota 3: «e mena seco Amor» vale «e conduce con sé l’Amore». Qual è il verbo che regge «Amor»?",
+ r2:"Non è questa. Guarda la parola che chiude il v. 8, in rima con «mira», e la nota 8.",
+ r3:"Non è questa. Cerca la parola con l’iniziale maiuscola che compare nel v. 3 e di nuovo nel v. 6.",
+ r4:"Non è questa. Pensa a ciò che lega la fine di un verso alla fine di un altro."};
+var SIGQ={r1:"Nella parafrasi del v. 3 avete letto «e mena seco Amor». Scrivete il verbo che regge «Amor», così come compare nel testo.",
+ r2:"Nei vv. 7-8 la donna è «d’umiltà donna» e ogni altra donna, in confronto a lei, viene chiamata con il contrario di «umiltà». Scrivete quella parola.",
+ r3:"Una parola personificata compare al v. 3 e ritorna al v. 6: è quella che avete riconosciuto come «ripresa». Scrivetela come compare nel testo.",
+ r4:"Nel sonetto di Rustico il cattivo odore è evocato anche dall’eco di «cesso» (v. 1) in «presso», «gresso» e «alcipresso». In quale posizione del verso avviene questo eco? Scrivete una parola."};
+
+function roomHead(i,intro){var r=ROOMS[i];return '<div class="eyebrow">Stanza '+(i+1)+' di 4 · '+r.sk+'</div><h2 style="margin:4px 0 8px">'+r.n+'</h2><p class="muted" style="max-width:44em">'+intro+'</p>'}
+function sigCard(i){
+  var r=ROOMS[i],id=r.id;
+  if(D(id+".S"))return '<div class="sigillo"><div class="row"><span class="seal on" style="width:56px;height:56px;font-size:1.7rem">'+r.L+'</span><div><b>Sigillo raccolto: la lettera '+r.L+'</b><div class="muted">La stanza si apre.</div></div></div><div style="margin-top:12px"><button class="btn pri" type="button" data-act="'+(i<3?'goRoom" data-v="'+ROOMS[i+1].id:'go" data-v="hub')+'">'+(i<3?'Vai alla stanza '+(i+2):'Torna alla mappa')+'</button></div></div>';
+  return '<div class="sigillo"><div class="eyebrow">Il sigillo</div><p style="margin:6px 0 10px">'+SIGQ[id]+'</p><div class="row"><input type="text" id="f-'+id+'.sin" data-k="'+id+'.sin" value="'+esc(A(id+".sin"))+'" style="max-width:260px" aria-label="Risposta del sigillo"><button class="btn pri" type="button" data-act="sig" data-v="'+id+'">Prova il sigillo</button></div>'+FB(id+".S")+'</div>';
+}
+ACT.sig=function(el){var id=el.dataset.v;if(SIG[id].test(norm(A(id+".sin")))){S.d[id+".S"]=true;setFb(id+".S","good","")}else setFb(id+".S","bad",SIGH[id])};
+/* ---- stanza 1 ---- */
+function errGroup(w){var n=norm(w);for(var i=0;i<ERR.length;i++)if(ERR[i].w.indexOf(n)>=0)return i;return -1}
+function r1items(){
+  var sel=S.a["r1.sel"]||[],seen={},out=[];
+  sel.forEach(function(id){var p=+id.split("-")[0],w=PARA[p][1].split(" ")[+id.split("-")[1]],g=errGroup(w),key=g>=0?"g"+g:"x"+id;
+    if(!seen[key]){seen[key]=1;out.push({key:key,g:g,lbl:g>=0?ERR[g].w.join(" "):norm(w),vv:PARA[p][0]})}});
+  return out;
+}
+ACT.tok=function(el){if(D("r1.A"))return;var s=S.a["r1.sel"]||[],id=el.dataset.v,i=s.indexOf(id);if(i>=0)s.splice(i,1);else s.push(id);S.a["r1.sel"]=s;S.fb["r1.A"]=null;save()};
+ACT.r1A=function(){
+  var it=r1items();
+  if(!it.length)return setFb("r1.A","bad","Tocca le parole che ti sembrano sbagliate e scrivi quella giusta.");
+  var good=it.filter(function(x){return x.g>=0&&ERR[x.g].re.test(norm(A("r1.fix."+x.key)))}).length;
+  if(good<4){
+    var hints=it.filter(function(x){return x.g>=0&&!ERR[x.g].re.test(norm(A("r1.fix."+x.key)))}).map(function(x){return "«"+x.lbl+"»: "+ERR[x.g].h});
+    var found=it.filter(function(x){return x.g>=0}).length;
+    return setFb("r1.A","bad","Correzioni giuste: "+good+" su 6, ne bastano 4. "+(found<4?"Cerca altre parole sospette. ":"")+(hints.length?"<br>"+hints.slice(0,2).join("<br>"):""));
+  }
+  S.d["r1.A"]=true;setFb("r1.A","good","Ottimo: "+good+" errori su 6 smascherati.");
+};
+ACT.r1B=function(){
+  if(wc(A("r1.B"))<10)return setFb("r1.B","bad","Scrivi qualche riga in più: bastano due o tre frasi che spieghino i vv. 9-11.");
+  S.d["r1.B"]=true;setFb("r1.B","good","Parafrasi consegnata.");
+};
+ACT.r1C=function(){
+  var miss=COMP.filter(function(c){return wc(A("r1."+c[0]))<c[3]}).map(function(c){return c[1]});
+  if(miss.length)return setFb("r1.C","bad","Risposte ancora troppo brevi: "+miss.join(", ")+". Spiegate con parole vostre e citate il testo.");
+  S.d["r1.C"]=true;setFb("r1.C","good","Risposte consegnate.");
+};
+ROOMV.r1=function(){
+  var h=roomHead(0,"La piazza è bloccata da un guardiano che parla male e che ha dimenticato la parte centrale del discorso. Per passare dovete smascherare la sua parafrasi e scriverne una vostra.");
+  var sel=S.a["r1.sel"]||[],items=r1items(),done=D("r1.A");
+  h+='<div class="card prova"><div class="eyebrow">Prova A</div><h3>La parafrasi bugiarda'+tag("r1.A")+'</h3><p>Il guardiano ha parafrasato il sonetto, ma ha messo sei parole sbagliate. Tocca le parole sospette, poi scrivi quella giusta. I vv. 9-11 mancano: sono la Prova B.</p>';
+  PARA.forEach(function(p,pi){
+    h+='<p class="para"><span class="lbl">'+p[0]+'</span>'+p[1].split(" ").map(function(w,wi){var id=pi+"-"+wi,on=sel.indexOf(id)>=0,g=errGroup(w);
+      return '<button type="button" class="tok'+(done&&g>=0?' found':on?' sel':'')+'" data-act="tok" data-v="'+id+'" aria-pressed="'+on+'"'+(done?' disabled':'')+'>'+esc(w)+'</button>'}).join(" ")+'</p>';
+  });
+  items.forEach(function(x){
+    h+='<div class="fix"><span class="w">'+esc(x.lbl)+' <small class="muted">('+x.vv+')</small></span><input type="text" id="f-r1.fix.'+x.key+'" data-k="r1.fix.'+x.key+'" value="'+esc(A("r1.fix."+x.key))+'" placeholder="parola giusta" aria-label="Parola giusta per '+esc(x.lbl)+'"'+(done?' disabled':'')+'>'+
+    '<input type="text" id="f-r1.why.'+x.key+'" data-k="r1.why.'+x.key+'" value="'+esc(A("r1.why."+x.key))+'" placeholder="come l’hai capito (facoltativo)" aria-label="Come lo hai capito"'+(done?' disabled':'')+'></div>';
+  });
+  if(!done)h+='<div style="margin-top:12px"><button class="btn pri" type="button" data-act="r1A">Controlla gli errori</button></div>';
+  h+=FB("r1.A")+'</div>';
+  if(done){
+    h+='<div class="card prova"><div class="eyebrow">Prova B</div><h3>La parafrasi mancante'+tag("r1.B")+'</h3><p>Scrivete in prosa moderna, in non più di 4 righe, la parafrasi dei vv. 9-11. La frase finale deve filare da sola, come se il sonetto non esistesse.</p>'+
+    ta("r1.B","Parafrasi dei vv. 9-11…",10,60,4)+'<div style="margin-top:8px"><b>Prima di consegnare, rileggete (facoltativo):</b>'+
+    CHK1.map(function(t,i){return '<label style="display:flex;gap:10px;align-items:flex-start;margin:6px 0"><input type="checkbox" id="f-r1.c'+i+'" style="width:22px;height:22px;margin-top:3px" data-k="r1.c'+i+'"'+(S.a["r1.c"+i]?' checked':'')+(D("r1.B")?' disabled':'')+'><span>'+t+'</span></label>'}).join("")+'</div>'+
+    (D("r1.B")?'':'<button class="btn pri" type="button" data-act="r1B">Consegna la parafrasi</button>')+FB("r1.B")+'</div>';
+  }
+  if(done&&D("r1.B")){
+    var dC=D("r1.C");
+    h+='<div class="card prova"><div class="eyebrow">Prova C</div><h3>Tre domande sul testo'+tag("r1.C")+'</h3><p>Rispondete in 2-3 righe ciascuna, con riferimenti al testo.</p>'+
+    COMP.map(function(c,i){return '<div style="margin-top:12px"><b style="font-family:var(--display);font-size:1.15rem">'+(i+1)+'. '+c[1]+'</b><p style="margin:4px 0 6px">'+c[2]+'</p>'+ta("r1."+c[0],"",c[3],70,3)+'</div>'}).join("")+
+    (dC?'':'<div style="margin-top:10px"><button class="btn pri" type="button" data-act="r1C">Consegna le risposte</button></div>')+FB("r1.C")+'</div>';
+  }
+  if(D("r1.C"))h+=sigCard(0);
+  return h;
+};
+/* ---- stanza 2 ---- */
+function accepted(ci){return CARDS[ci][2]}
+ACT.pick=function(el){var v=el.dataset.v;S.a["r2.sel"]=(S.a["r2.sel"]===v?"":v);save()};
+ACT.put=function(el){
+  var s=S.a["r2.sel"];if(s===""||s==null||D("r2.A"))return;
+  var pl=S.a["r2.pl"]||{},b=el.dataset.v;
+  if(b==="pool")delete pl[s];else pl[s]=b;
+  S.a["r2.pl"]=pl;S.a["r2.sel"]="";S.a["r2.bad"]=(S.a["r2.bad"]||[]).filter(function(x){return x!==s});S.fb["r2.A"]=null;save();
+};
+ACT.r2A=function(){
+  var pl=S.a["r2.pl"]||{},left=CARDS.length-Object.keys(pl).length;
+  if(left)return setFb("r2.A","bad","Hai ancora "+left+" "+(left>1?"carte":"carta")+" nel mazzo.");
+  var bad=[];CARDS.forEach(function(c,i){if(accepted(i).indexOf(pl[i])<0)bad.push(String(i))});
+  S.a["r2.bad"]=bad;
+  if(bad.length>3)return setFb("r2.A","bad",(CARDS.length-bad.length)+" carte su "+CARDS.length+" sono al posto giusto, ne servono 13. Quelle con il bordo rosso vanno riviste.");
+  if(wc(A("r2.A2"))<5)return setFb("r2.A","bad","Carte a posto. Scrivete ora, in una riga, quali due carte potevano stare in due campi e perché.");
+  S.d["r2.A"]=true;setFb("r2.A","good","Campi in ordine.");
+};
+ACT.kw=function(el){if(D("r2.B"))return;var s=S.a["r2.kw"]||[],v=el.dataset.v,i=s.indexOf(v);if(i>=0)s.splice(i,1);else if(s.length<3)s.push(v);S.a["r2.kw"]=s;S.fb["r2.B"]=null;save()};
+ACT.r2B=function(){
+  var s=S.a["r2.kw"]||[];
+  if(s.length!==3)return setFb("r2.B","bad","Scegliete esattamente tre parole-chiave.");
+  var short=s.filter(function(w){return wc(A("r2.D."+w))<5});
+  if(short.length)return setFb("r2.B","bad","Spiegate meglio: "+short.join(", ")+".");
+  S.d["r2.B"]=true;setFb("r2.B","good","Parole-chiave motivate.");
+};
+ROOMV.r2=function(){
+  var h=roomHead(1,"Davanti alla donna le parole di Guido si sono sparpagliate come carte sul pavimento. Rimettetele a posto, in fretta: poi serve un po’ di analisi.");
+  var pl=S.a["r2.pl"]||{},sel=S.a["r2.sel"],bad=S.a["r2.bad"]||[],doneA=D("r2.A");
+  function card(i){var c=CARDS[i];return '<button type="button" class="cd'+(sel===String(i)?' sel':'')+(bad.indexOf(String(i))>=0?' bad':'')+'" data-act="pick" data-v="'+i+'"'+(doneA?' disabled':'')+'>'+esc(c[0])+'<small>v.'+c[1]+'</small></button>'}
+  h+='<div class="card prova"><div class="eyebrow">Prova A</div><h3>Le '+CARDS.length+' carte'+tag("r2.A")+'</h3><p>Tocca una carta, poi tocca il campo in cui metterla. Per rimetterla nel mazzo, tocca il mazzo. Due carte possono stare in due campi: scegliete dove metterle e giustificate la scelta.</p>';
+  h+='<div class="pool'+(sel?' target':'')+'" data-act="put" data-v="pool" role="group" aria-label="Mazzo">'+CARDS.map(function(c,i){return pl[i]?"":card(i)}).join("")+(Object.keys(pl).length===CARDS.length?'<span class="muted">Mazzo vuoto</span>':'')+'</div><div class="buckets">';
+  BK.forEach(function(b){h+='<div class="bucket'+(sel?' target':'')+'" data-act="put" data-v="'+b[0]+'" role="group" aria-label="'+b[1]+'"><h4>'+b[1]+'</h4><div class="in">'+CARDS.map(function(c,i){return pl[i]===b[0]?card(i):""}).join("")+'</div></div>'});
+  h+='</div><div style="margin-top:14px"><b>Le due carte doppie</b><p class="muted" style="margin:2px 0 6px">Quali sono e perché potevano stare in due campi?</p>'+ta("r2.A2","Scrivete qui…",5,0,2)+'</div>';
+  if(!doneA)h+='<div style="margin-top:10px"><button class="btn pri" type="button" data-act="r2A">Controlla le carte</button></div>';
+  h+=FB("r2.A")+'</div>';
+  if(doneA){
+    var kw=S.a["r2.kw"]||[],dB=D("r2.B");
+    h+='<div class="card prova"><div class="eyebrow">Prova B</div><h3>Le parole-chiave'+tag("r2.B")+'</h3><p>Scegliete tre parole-chiave del sonetto. Per ognuna scrivete una riga: è ripetuta? sta in rima? è al centro di un campo? entra in un contrasto?</p><div class="chips">'+
+    KW.map(function(w){return '<button type="button" class="chip'+(kw.indexOf(w)>=0?' on':'')+'" data-act="kw" data-v="'+w+'" aria-pressed="'+(kw.indexOf(w)>=0)+'"'+(dB?' disabled':'')+'>'+w+'</button>'}).join("")+'</div>'+
+    kw.map(function(w){return '<div style="margin-top:10px"><b style="font-family:var(--display);font-size:1.15rem">'+w+'</b>'+ta("r2.D."+w,"Perché è una parola-chiave?",5,0,2)+'</div>'}).join("")+(dB?'':'<div style="margin-top:10px"><button class="btn pri" type="button" data-act="r2B">Conferma le parole-chiave</button></div>')+FB("r2.B")+'</div>';
+  }
+  if(D("r2.B"))h+=sigCard(1);
+  return h;
+};
+</script>
+<script>
+/* ---------- stanze 3 e 4 ---------- */
+function selH(k,opts,dis,lbl){
+  var cur=A(k);
+  return '<select id="f-'+k+'" data-k="'+k+'"'+(dis?' disabled':'')+' aria-label="'+esc(lbl||k)+'">'+opts.map(function(o){var v=Array.isArray(o)?o[0]:o,l=Array.isArray(o)?o[1]:o;return '<option value="'+esc(v)+'"'+(cur===v?' selected':'')+'>'+esc(l||"— scegli —")+'</option>'}).join("")+'</select>';
+}
+function sameSet(a,b){a=(a||[]).slice().sort(function(x,y){return x-y});return a.length===b.length&&a.every(function(x,i){return x===b[i]})}
+/* ---- stanza 3 ---- */
+ACT.r3A=function(){
+  var bad=[];RIMA.forEach(function(w,i){if(A("r3.rm."+i)!==RIMA_OK.charAt(i))bad.push(i)});
+  S.a["r3.bad"]=bad;
+  var q=[A("r3.q1")==="quartine",A("r3.q2")==="terzine",A("r3.q4")==="invertito (CDE EDC)"];
+  if(bad.length>2)return setFb("r3.A","bad","Lo schema non torna: "+(14-bad.length)+" versi su 14 hanno la lettera giusta, ne servono 12. Controllate quelli segnati in rosso.");
+  S.d["r3.A"]=true;setFb("r3.A","good","Schema metrico: ABBA ABBA CDE EDC, in endecasillabi.");
+};
+ACT.r3B=function(){
+  var bad=[];FIG.forEach(function(f,i){if(A("r3.fg."+i)!==f[1])bad.push(i)});
+  S.a["r3.fbad"]=bad;
+  if(bad.length>2)return setFb("r3.B","bad",(FIG.length-bad.length)+" figure su "+FIG.length+" sono giuste, ne servono 5. Quelle in rosso vanno riviste.");
+  S.d["r3.B"]=true;setFb("r3.B","good","Tutte le figure riconosciute.");
+};
+ACT.r3C=function(){
+  var miss=WHY.filter(function(w){return wc(A("r3."+w[0]))<w[3]}).map(function(w){return w[1]});
+  if(miss.length)return setFb("r3.C","bad","Risposte ancora troppo brevi: "+miss.join(", ")+". Non basta nominare la figura: provate a dire che effetto produce e perché il poeta la sceglie.");
+  S.d["r3.C"]=true;setFb("r3.C","good","Figure spiegate.");
+};
+ROOMV.r3=function(){
+  var h=roomHead(2,"Il poeta non riesce a parlare, ma la sala rimbomba di echi: rime, figure, riprese. Per attraversarla dovete riconoscere come è costruito il testo e capire perché.");
+  var dA=D("r3.A"),bad=S.a["r3.bad"]||[];
+  h+='<div class="card prova"><div class="eyebrow">Prova A</div><h3>Lo schema delle rime'+tag("r3.A")+'</h3><p>Assegnate una lettera a ogni verso a partire dalla parola in rima: stessa lettera, stessa rima.</p>';
+  RIMA.forEach(function(w,i){h+='<div class="rm'+(bad.indexOf(i)>=0?' bad':'')+'"><span class="no">'+(i+1)+'</span><span style="font-family:var(--display);font-size:1.15rem">'+w+'</span>'+selH("r3.rm."+i,["","A","B","C","D","E"],dA,"Rima del verso "+(i+1))+'</div>'});
+  h+='<div class="row" style="margin-top:12px;align-items:flex-start"><div style="flex:1;min-width:200px"><label class="eyebrow" for="f-r3.q1">Le due strofe di 4 versi sono</label>'+selH("r3.q1",["","quartine","terzine","distici"],dA)+'</div>'+
+  '<div style="flex:1;min-width:200px"><label class="eyebrow" for="f-r3.q2">Le due strofe di 3 versi sono</label>'+selH("r3.q2",["","quartine","terzine","distici"],dA)+'</div>'+
+  '<div style="flex:1;min-width:200px"><label class="eyebrow" for="f-r3.q4">Lo schema delle terzine è</label>'+selH("r3.q4",["","ripetuto (CDE CDE)","invertito (CDE EDC)","alternato (CDC DCD)"],dA)+'</div></div>'+
+  (dA?'':'<div style="margin-top:12px"><button class="btn pri" type="button" data-act="r3A">Controlla lo schema</button></div>')+FB("r3.A")+'</div>';
+  if(dA){
+    var dB=D("r3.B"),fb=S.a["r3.fbad"]||[];
+    h+='<div class="card prova"><div class="eyebrow">Prova B</div><h3>La caccia alle figure'+tag("r3.B")+'</h3><p>Abbinate a ogni passo la figura che lo definisce meglio.</p>'+
+    '<details><summary>Promemoria</summary><p class="muted" style="margin:8px 0 0">Personificazione: azioni umane attribuite a un’entità astratta. Antitesi: due idee opposte. Anafora: stessa parola all’inizio di versi diversi. Enjambement: la frase continua nel verso seguente. Ripresa: una parola o un concetto ritorna a distanza. Interrogativa: domanda posta dal poeta. Esclamazione: grido di meraviglia o di emozione. Metafora: trasferimento di significato. Iperbole: esagerazione.</p></details>'+
+    FIG.map(function(f,i){return '<div class="rm'+(fb.indexOf(i)>=0?' bad':'')+'" style="grid-template-columns:1fr minmax(170px,.6fr)"><span style="font-family:var(--display);font-size:1.1rem">'+f[0]+'</span>'+selH("r3.fg."+i,[""].concat(FIGOPT),dB,"Figura del passo "+(i+1))+'</div>'}).join("")+
+    (dB?'':'<div style="margin-top:12px"><button class="btn pri" type="button" data-act="r3B">Controlla le figure</button></div>')+FB("r3.B")+'</div>';
+  }
+  if(D("r3.B")){
+    var dC=D("r3.C");
+    h+='<div class="card prova"><div class="eyebrow">Prova C</div><h3>Perché il poeta le usa?'+tag("r3.C")+'</h3><p>Riconoscere una figura non basta. Rispondete in 3-4 righe a ciascuna domanda: che effetto produce e che cosa vuole farci capire Cavalcanti.</p>'+
+    WHY.map(function(w,i){return '<div style="margin-top:14px"><b style="font-family:var(--display);font-size:1.15rem">'+(i+1)+'. '+w[1]+'</b><p style="margin:4px 0 6px">'+w[2]+'</p>'+ta("r3."+w[0],"",w[3],80,4)+'</div>'}).join("")+
+    (dC?'':'<div style="margin-top:10px"><button class="btn pri" type="button" data-act="r3C">Consegna le risposte</button></div>')+FB("r3.C")+'</div>';
+  }
+  if(D("r3.C"))h+=sigCard(2);
+  return h;
+};
+/* ---- stanza 4 ---- */
+function twNorm(w){var n=norm(w).replace(/'+$/,"");var p=n.split("'");return p[p.length-1]}
+ACT.tw=function(el){if(D("r4.A"))return;var s=S.a["r4.sel"]||[],v=el.dataset.v,i=s.indexOf(v);if(i>=0)s.splice(i,1);else s.push(v);S.a["r4.sel"]=s;S.fb["r4.A"]=null;save()};
+function r4words(){var s=S.a["r4.sel"]||[],out=[];s.forEach(function(id){var p=id.split("-");out.push(twNorm(VOI[+p[0]].split(" ")[+p[1]]))});return out}
+ACT.r4A=function(){
+  var w=r4words(),found=TWG.filter(function(g){return g.some(function(t){return w.indexOf(t)>=0})}).length;
+  if(!w.length)return setFb("r4.A","bad","Tocca le parole di «Voi che» che ritrovi anche in «Chi è questa che vén».");
+  if(found<5)return setFb("r4.A","bad","Gemelle trovate: "+found+" su "+TWG.length+", ne bastano 5. Cerca verbi, sentimenti, parti del corpo.");
+  S.d["r4.A"]=true;setFb("r4.A","good","Gemelle trovate: "+found+" su "+TWG.length+".");
+};
+ACT.r4B=function(){
+  var bad=[];TW.forEach(function(t,i){if(A("r4.tw."+i+".a")!==String(t[3])||A("r4.tw."+i+".b")!==String(t[6]))bad.push(i)});
+  S.a["r4.bad"]=bad;
+  if(bad.length>1)return setFb("r4.B","bad",(TW.length-bad.length)+" coppie su "+TW.length+" sono giuste, ne bastano 3. Quelle in rosso vanno riviste.");
+  S.d["r4.B"]=true;setFb("r4.B","good","Stesse parole, effetti opposti.");
+};
+ACT.r4C=function(){
+  if(wc(A("r4.C"))<20)return setFb("r4.C","bad","Scrivete qualche riga in più: come cambia Amore tra i due sonetti? Citate almeno due parole gemelle.");
+  S.d["r4.C"]=true;setFb("r4.C","good","Confronto consegnato.");
+};
+ACT.r4D=function(){
+  if(wc(A("r4.Rw"))<10)return setFb("r4.D","bad","Scrivete almeno due frasi: una differenza per ciascun sonetto, con una parola citata.");
+  S.d["r4.D"]=true;setFb("r4.D","good",A("r4.rs")==="olfatto"?"Giusto: nel sonetto di Rustico il senso protagonista è l’olfatto.":"Nota: in Rustico il senso che prende il posto della vista è l’olfatto («si tura il naso»).");
+};
+ROOMV.r4=function(){
+  var h=roomHead(3,"Nel corridoio risuonano le voci di altri poeti. Prima ascoltate quella che conoscete già, poi una voce molto diversa.");
+  var dA=D("r4.A"),sel=S.a["r4.sel"]||[];
+  h+='<div class="card prova"><div class="eyebrow">Prova A</div><h3>Parole gemelle'+tag("r4.A")+'</h3><p>Questo è <i>Voi che per li occhi mi passaste ’l core</i>, che già conoscete. Tocca le parole che hanno una gemella (stessa parola, o quasi) in <i>Chi è questa che vén</i>. Le gemelle sono sette; alcune compaiono più volte.</p><div class="para">'+
+  VOI.map(function(l,li){return '<div>'+l.split(" ").map(function(w,wi){var id=li+"-"+wi,on=sel.indexOf(id)>=0,tw=TWINS.indexOf(twNorm(w))>=0;return '<button type="button" class="tok'+(dA&&tw?' found':on?' sel':'')+'" data-act="tw" data-v="'+id+'" aria-pressed="'+on+'"'+(dA?' disabled':'')+'>'+esc(w)+'</button>'}).join(" ")+'</div>'}).join("")+'</div>'+
+  (dA?'':'<button class="btn pri" type="button" data-act="r4A">Controlla</button>')+FB("r4.A")+'</div>';
+  if(dA){
+    var dB=D("r4.B"),bad=S.a["r4.bad"]||[];
+    h+='<div class="card prova"><div class="eyebrow">Prova B</div><h3>Stessa parola, altro segno'+tag("r4.B")+'</h3><p>Per ogni parola gemella scegliete che cosa accade nei due testi.</p>';
+    TW.forEach(function(t,i){
+      h+='<div class="card" style="margin:0 0 10px;padding:12px 14px;background:var(--bg)'+(bad.indexOf(i)>=0?';border-color:var(--seal)':'')+'"><b style="font-family:var(--display);font-size:1.2rem">'+t[0]+'</b>'+
+      '<label class="eyebrow" style="display:block;margin-top:6px" for="f-r4.tw.'+i+'.a">'+t[1]+'</label>'+selH("r4.tw."+i+".a",[""].concat(t[2].map(function(o,j){return [String(j),o]})),dB)+
+      '<label class="eyebrow" style="display:block;margin-top:6px" for="f-r4.tw.'+i+'.b">'+t[4]+'</label>'+selH("r4.tw."+i+".b",[""].concat(t[5].map(function(o,j){return [String(j),o]})),dB)+'</div>';
+    });
+    h+=(dB?'':'<button class="btn pri" type="button" data-act="r4B">Controlla le coppie</button>')+FB("r4.B")+'</div>';
+  }
+  if(D("r4.B")){
+    var dC=D("r4.C");
+    h+='<div class="card prova"><div class="eyebrow">Prova C</div><h3>Il rovesciamento'+tag("r4.C")+'</h3><p>In <i>Chi è questa</i> Amore accompagna la donna e tutti restano ammutoliti. In <i>Voi che</i> Amore ferisce, e al poeta resta un filo di voce. Spiegate in circa 5 righe come cambia la rappresentazione di Amore e dell’effetto sul poeta, citando almeno tre parole gemelle.</p>'+ta("r4.C","",20,80,5)+
+    (dC?'':'<div style="margin-top:10px"><button class="btn pri" type="button" data-act="r4C">Consegna il confronto</button></div>')+FB("r4.C")+'</div>';
+  }
+  if(D("r4.C")){
+    var dD=D("r4.D");
+    h+='<div class="card prova"><div class="eyebrow">Prova D · lampo</div><h3>Una voce fuori dal coro'+tag("r4.D")+'</h3><p>Rustico Filippi parla di una donna molto diversa. Rileggete il sonetto, se serve, poi rispondete.</p>'+
+    '<details><summary>Rustico Filippi, <i>Dovunque vai, con teco porti il cesso</i></summary><div class="para" style="font-size:1.1rem;line-height:1.5;margin-top:8px">'+RUST.map(function(l,i){return '<div><span class="lbl">'+(i+1)+'</span>'+esc(l)+'</div>'}).join("")+'</div></details>'+
+    '<label class="eyebrow" style="display:block;margin-top:10px" for="f-r4.rs">Quale senso sostituisce la vista, strumento tradizionale dell’innamoramento, nel sonetto di Rustico?</label>'+selH("r4.rs",["","udito","olfatto","tatto","gusto"],dD)+
+    '<p style="margin:12px 0 6px">La donna di Rustico e quella di Cavalcanti producono effetti opposti su chi le incontra. Indicate in 3-4 righe due differenze, citando una parola o un’espressione per ciascun testo.</p>'+ta("r4.Rw","",10,70,3)+
+    (dD?'':'<div style="margin-top:10px"><button class="btn pri" type="button" data-act="r4D">Controlla</button></div>')+FB("r4.D")+'</div>';
+  }
+  if(D("r4.D"))h+=sigCard(3);
+  return h;
+};
+</script>
+<script>
+/* ---------- finale, consegna, storyboard ---------- */
+var FIN=[
+ ["f1","Riassunto","Riassumete il contenuto del sonetto in non più di 5 righe.",15,90,5],
+ ["f2","La donna","Questa donna viene descritta nel sonetto? Quale parte del corpo è nominata? Che effetti produce in chi la guarda? Vi sembra una donna angelicata? Rispondete in non più di 6 righe, con riferimenti al testo.",15,100,6],
+ ["f3","Ineffabilità","Che cosa si intende per «ineffabilità»? In quali punti del testo è messa in evidenza e con quali figure? Rispondete in non più di 5 righe.",12,80,5],
+ ["f4","Interpretazione","Cavalcanti riprende da Guinizelli il motivo della lode della donna, ma l’atteggiamento è più contemplativo: al posto delle immagini naturalistiche ci sono gli effetti psicologici dell’apparizione. Altrove, nel suo Canzoniere, l’amore è spesso un dramma tragico e crudele. Scrivete un’interpretazione complessiva (circa 20 righe): che cosa dice il sonetto del rapporto tra la donna, l’amore, la parola e la conoscenza? Citate almeno tre elementi del testo e confrontate il sonetto con «Voi che per li occhi mi passaste ’l core» e, se volete, con Rustico Filippi.",50,300,12]];
+var COLS=["#14182b","#c23f29","#2a3d9e","#a97c1c","#2b7a58","#ffffff"];
+ACT.col=function(el){S.a["sb.col"]=el.dataset.v;save()};
+ACT.clearCv=function(el){var i=el.dataset.v;delete S.draw[i];save()};
+ACT.finDone=function(){
+  var miss=FIN.filter(function(f){return wc(A(f[0]))<f[3]}).map(function(f){return f[1]});
+  if(miss.length)return setFb("fin","bad","Mancano ancora risposte abbastanza complete: "+miss.join(", ")+".");
+  S.d.fin=true;setFb("fin","good","");go("consegna");
+};
+function viewFinale(){
+  var h='<div class="eyebrow">Finale</div><h2 style="margin:4px 0 8px">La parola</h2><p class="muted" style="max-width:44em">In piazza tutti la mirano e nessuno parla. Voi, invece, le parole le avete ritrovate. Ora tocca a voi scrivere che cosa il poeta non riesce a dire. Come nella prova d’esame, citate il testo e motivate ogni affermazione.</p>';
+  FIN.forEach(function(f,i){h+='<div class="card prova"><div class="eyebrow">Domanda '+(i+1)+'</div><h3>'+f[1]+'</h3><p>'+f[2]+'</p>'+ta(f[0],"",f[3],f[4],f[5])+'</div>'});
+  h+='<div class="card prova"><div class="eyebrow">Facoltativa</div><h3>La piazza, in quattro vignette</h3><p>Disegnate una vignetta per ogni strofa, con gli «attori» del sonetto: la donna, la luce, Amore, la folla, la mente. Sotto ogni vignetta scrivete in una riga perché l’avete rappresentata così.</p><div class="tools"><span class="eyebrow">Colore</span>'+
+  COLS.map(function(c,i){return '<button type="button" class="dot'+((S.a["sb.col"]||COLS[0])===c?' on':'')+'" style="background:'+c+'" data-act="col" data-v="'+c+'" aria-label="'+(i===5?'Gomma':'Colore '+(i+1))+'"></button>'}).join("")+'<span class="muted">(l’ultimo è la gomma)</span></div><div class="canvases">'+
+  ["vv. 1-4","vv. 5-8","vv. 9-11","vv. 12-14"].map(function(t,i){return '<div><div class="eyebrow">'+t+'</div><canvas id="cv'+i+'" width="800" height="500" aria-label="Vignetta '+(i+1)+'"></canvas><div class="row" style="margin:6px 0"><button class="btn sm" type="button" data-act="clearCv" data-v="'+i+'">Cancella</button></div><input type="text" id="f-sb.cap'+i+'" data-k="sb.cap'+i+'" value="'+esc(A("sb.cap"+i))+'" placeholder="Perché l’avete disegnata così?"></div>'}).join("")+'</div></div>';
+  h+=FB("fin")+'<div class="row"><button class="btn pri" type="button" data-act="finDone">Vai alla consegna</button></div>';
+  return h;
+}
+function initCanvases(){
+  for(var i=0;i<4;i++)(function(i){
+    var cv=document.getElementById("cv"+i);if(!cv)return;var ctx=cv.getContext("2d");
+    ctx.fillStyle="#fff";ctx.fillRect(0,0,cv.width,cv.height);ctx.lineCap="round";ctx.lineJoin="round";
+    if(S.draw[i]){var im=new Image();im.onload=function(){ctx.drawImage(im,0,0)};im.src=S.draw[i]}
+    var on=false,lx=0,ly=0;
+    function pt(e){var r=cv.getBoundingClientRect();return [(e.clientX-r.left)*cv.width/r.width,(e.clientY-r.top)*cv.height/r.height]}
+    cv.addEventListener("pointerdown",function(e){on=true;var p=pt(e);lx=p[0];ly=p[1];try{cv.setPointerCapture(e.pointerId)}catch(x){}
+      var c=S.a["sb.col"]||COLS[0];ctx.strokeStyle=c;ctx.lineWidth=c==="#ffffff"?30:5;ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(lx+.1,ly+.1);ctx.stroke();e.preventDefault()});
+    cv.addEventListener("pointermove",function(e){if(!on)return;var p=pt(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p[0],p[1]);ctx.stroke();lx=p[0];ly=p[1];e.preventDefault()});
+    function end(){if(!on)return;on=false;try{S.draw[i]=cv.toDataURL("image/png");save()}catch(x){}}
+    cv.addEventListener("pointerup",end);cv.addEventListener("pointercancel",end);
+  })(i);
+}
+function buildReport(){
+  var L=[];function P(t){L.push(t)}
+  P("IL SILENZIO DELLA PIAZZA · Cavalcanti, Chi è questa che vén, ch’ogn’om la mira");
+  P("Squadra: "+(S.team||"—"));P("Componenti: "+(S.mem||"—"));P("Data: "+new Date().toLocaleDateString("it-IT"));
+  var used=Object.keys(S.help).map(function(c){return {nota:"Nota",ril:"Rilettura",conf:"Confronto"}[c]+" (stanza "+S.help[c].slice(1)+")"});
+  P("Carte aiuto usate: "+(used.length?used.join(", "):"nessuna"));
+  var sk=Object.keys(S.skipped||{});P("Prove saltate: "+(sk.length?sk.join(", "):"nessuna"));P("");
+  P("== STANZA 1 · Parafrasi e comprensione ==");
+  ERR.forEach(function(e,i){P("Errore «"+e.w.join(" ")+"» → "+(A("r1.fix.g"+i)||"—")+" | come l’ho capito: "+(A("r1.why.g"+i)||"—"))});
+  P("Parafrasi vv. 9-11: "+A("r1.B"));
+  COMP.forEach(function(c){P(c[1]+": "+A("r1."+c[0]))});P("");
+  P("== STANZA 2 · Parole-chiave ==");
+  P("Carte doppie: "+A("r2.A2"));
+  (S.a["r2.kw"]||[]).forEach(function(w){P("Parola-chiave «"+w+"»: "+A("r2.D."+w))});P("");
+  P("== STANZA 3 · Figure retoriche e perché ==");
+  WHY.forEach(function(w){P(w[1]+": "+A("r3."+w[0]))});P("");
+  P("== STANZA 4 · Collegamenti ==");
+  P("Confronto con «Voi che»: "+A("r4.C"));
+  P("Rustico Filippi, senso che sostituisce la vista: "+(A("r4.rs")||"—"));
+  P("Rustico Filippi, confronto: "+A("r4.Rw"));P("");
+  P("== FINALE · La parola ==");
+  FIN.forEach(function(f){P(f[1]+":");P(A(f[0])||"—");P("")});
+  for(var i=0;i<4;i++)if(A("sb.cap"+i))P("Vignetta "+(i+1)+": "+A("sb.cap"+i));
+  return L.join("\n");
+}
+ACT.copy=function(){
+  var t=buildReport(),ta1=document.getElementById("rep");
+  function fallback(){try{ta1.focus();ta1.select();document.execCommand("copy");setFb("cons","good","Testo selezionato e copiato. Incollalo nel documento da consegnare.")}catch(x){setFb("cons","bad","Seleziona il testo nel riquadro e copialo a mano.")}render()}
+  try{navigator.clipboard.writeText(t).then(function(){setFb("cons","good","Risposte copiate. Incollale nel documento da consegnare.");render()},fallback)}catch(x){fallback()}
+};
+function viaDownloads(name,data){
+  var u=window.claude&&window.claude.use?window.claude.use("downloads"):Promise.resolve(null);
+  return u.then(function(d){if(!d)throw {code:"unavailable"};return d.save({filename:name,data:data})}).then(function(){setFb("cons","good","File salvato.");render()},function(e){setFb("cons","bad",e&&e.code==="declined"?"Salvataggio annullato.":"Il salvataggio non è disponibile su questo dispositivo: usa «Copia le risposte».");render()});
+}
+ACT.saveTxt=function(){viaDownloads("silenzio-della-piazza-"+(S.team||"squadra").replace(/[^\w-]+/g,"-")+".txt",buildReport())};
+ACT.saveSb=function(){
+  var c=document.createElement("canvas");c.width=1600;c.height=1000;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,1600,1000);
+  var pend=0,done=0;
+  for(var i=0;i<4;i++)(function(i){if(!S.draw[i])return;pend++;var im=new Image();im.onload=function(){x.drawImage(im,(i%2)*800,Math.floor(i/2)*500);if(++done===pend)out()};im.src=S.draw[i]})(i);
+  function out(){x.strokeStyle="#999";x.lineWidth=2;x.strokeRect(0,0,800,500);x.strokeRect(800,0,800,500);x.strokeRect(0,500,800,500);x.strokeRect(800,500,800,500);c.toBlob(function(b){if(b)viaDownloads("storyboard-"+(S.team||"squadra").replace(/[^\w-]+/g,"-")+".png",b)})}
+  if(!pend)setFb("cons","bad","Non c’è ancora nessun disegno da salvare.");
+};
+ACT.resetAsk=function(){S.a._r=true;save()};
+ACT.resetDo=function(){try{localStorage.removeItem(K)}catch(e){}S.team="";S.mem="";S.a={};S.d={};S.fb={};S.help={};S.tries={};S.skipped={};S.unlocked=false;S.draw={};go("start")};
+var METHOD=[["1 · Leggi e parafrasa","Riscrivi ogni strofa in prosa, verso per verso, e non lasciare parole oscure."],["2 · Parole-chiave e campi","Segna le parole ripetute e raggruppale per campo semantico: quale processo raccontano?"],["3 · Metrica e suono","Schema delle rime, tipo di verso, accenti e rapporto tra periodo e strofa."],["4 · Figure","Metafore, personificazioni, antitesi, ripetizioni: per ogni figura chiediti che effetto produce."],["5 · Collegamenti","Quali testi e autori richiama? Stesse parole con lo stesso segno o con segno diverso?"],["6 · Interpreta","Una tesi in una frase, tre prove dal testo, un confronto. Poi scrivi."]];
+function viewConsegna(){
+  var h='<div class="eyebrow">Consegna</div><h2 style="margin:4px 0 8px">Le parole tornano</h2><p class="muted" style="max-width:44em">Avete attraversato quattro stanze e ritrovato la parola. Consegnate le risposte alla docente: copiatele e incollatele nel documento indicato, oppure salvate il file.</p>';
+  h+='<div class="card"><div class="row" style="margin-bottom:8px"><b style="font-family:var(--display);font-size:1.3rem">'+esc(S.team||"Squadra senza nome")+'</b><span class="muted">'+esc(S.mem)+'</span></div><textarea id="rep" readonly rows="14" style="font-family:var(--mono);font-size:.82rem">'+esc(buildReport())+'</textarea>'+
+  '<div class="row" style="margin-top:10px"><button class="btn pri" type="button" data-act="copy">Copia le risposte</button><button class="btn" type="button" data-act="saveTxt">Salva come file di testo</button><button class="btn" type="button" data-act="saveSb">Salva lo storyboard (PNG)</button></div>'+FB("cons")+'</div>';
+  h+='<div class="card"><h3>La carta del metodo</h3><p class="muted">Sono le sei mosse che avete appena fatto. Alla verifica servono nello stesso ordine, su un sonetto che non conoscete.</p><div class="method">'+METHOD.map(function(m){return '<div><b>'+m[0]+'</b>'+m[1]+'</div>'}).join("")+'</div></div>';
+  h+='<div class="row"><button class="btn" type="button" data-act="go" data-v="hub">Torna alla mappa</button>'+(S.a._r?'<button class="btn" type="button" data-act="resetDo" style="border-color:var(--seal);color:var(--seal)">Conferma: cancella tutto e ricomincia</button>':'<button class="btn" type="button" data-act="resetAsk">Ricomincia da capo</button>')+'</div>';
+  return h;
+}
+/* ---------- avvio ---------- */
+renderText();
+if(S.screen!=="start"&&S.screen!=="hub"&&S.screen!=="finale"&&S.screen!=="consegna"&&!ROOMV[S.screen])S.screen="start";
+render();
+</script>
+
+</body></html>
